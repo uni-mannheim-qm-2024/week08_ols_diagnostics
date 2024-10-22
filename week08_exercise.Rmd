@@ -1,0 +1,162 @@
+---
+title: "Quantitative Methods in Political Science - Week 8: Exercise"
+author: 
+date: 
+output:
+  html_document:
+    toc: no
+  pdf_document:
+    toc: yes
+bibliography: citations.bib # this adds a bibliography file from the repo
+biblio-style: apsr # this selects the style 
+---
+
+```{r setup, include=FALSE}
+# The first line sets an option for the final document that can be produced from
+# the .Rmd file. Don't worry about it.
+knitr::opts_chunk$set(echo = TRUE)
+
+# The next bit is quite powerful and useful. 
+# First you define which packages you need for your analysis and assign it to 
+# the p_needed object. 
+p_needed <-
+  c("viridis", "stargazer")
+
+# Now you check which packages are already installed on your computer.
+# The function installed.packages() returns a vector with all the installed 
+# packages.
+packages <- rownames(installed.packages())
+# Then you check which of the packages you need are not installed on your 
+# computer yet. Essentially you compare the vector p_needed with the vector
+# packages. The result of this comparison is assigned to p_to_install.
+p_to_install <- p_needed[!(p_needed %in% packages)]
+# If at least one element is in p_to_install you then install those missing
+# packages.
+if (length(p_to_install) > 0) {
+  install.packages(p_to_install)
+}
+# Now that all packages are installed on the computer, you can load them for
+# this project. Additionally the expression returns whether the packages were
+# successfully loaded.
+sapply(p_needed, require, character.only = TRUE)
+
+# This is an option for stargazer tables
+# It automatically adapts the output to html or latex,
+# depending on whether we want a html or pdf file
+stargazer_opt <- ifelse(knitr::is_latex_output(), "latex", "html")
+```
+
+## Part 1: Education and Income
+
+Load the `GGSS2018.Rdata` data set that you can find in the raw-data folder. The data set contains some variables of the German General Social Survey (GGSS) of 2018 @ZA5272, also known as ALLBUS. Specifically, the data includes the following variables: 
+
+|  Variable      |   Description                                                |
+|:---------------|:-------------------------------------------------------------|
+| `respid`       | Respondent ID number                                         |
+| `sex`          | Respondent's Sex                                             |
+| `eastwest`     | Region of Interview: West (=1), East (=2)                    |
+| `land`         | Federal state that respondent lives in                       |
+| `german`       | Resp. German citizenship: Yes, only (1), Yes also (2), No (3)|
+| `di01a`        | Respondent's monthly income (net in Euros per month)         |
+| `di01b`        | Respondent's household income (net in Euros per month)       |
+| `work`         | Respondent's current employment status                       |
+| `dw01`         | Respondent's current occupation                              |
+| `dw15`         | Respondent's average working hours per week                  |
+| `dw37`         | Respondent's avg working hours per week (on the side)        |
+| `S01`          | Respondent's years in education                              |
+| `iscd11`       | Respondent's education (ISCED 2011)                          |
+| `isced97`      | Respondent's education (ISCED 1997)                          |
+| `fiscd975`     | Respondent's father's education (ISCED 2011)                 |
+| `miscd975`     | Respondent's mother's education (ISCED 2011)                 |
+| `sciscd97`     | Respondent's spouse's education (ISCED 2011)                 |
+| `sciscd11`     | Respondent's spouse's education (ISCED 2011)                 |
+| `pisced97`     | Respondent's partner's education (ISCED 2011)                |
+| `piscd11`      | Respondent's partner's education (ISCED 2011)                |
+| `univ`         | Respondent has university degree (=1)                        |
+| `applied_univ` | Respondent has applied university degree (=1)                |
+
+We will revisit the relationship between education and income. Specifically, we will look into the effect of additional years in education, `S01`, affect a respondent's income, `di01a`. To do so, we account for where a respondent lives in an old federal state (West), or a new federal state of the former German Democratic Republic, and the respondent's `sex`.
+
+
+**1. Load the data and take care of missing values on variables of interest.**
+
+```{r 1-data-processing}
+# Read Data
+GGSS <-  haven::read_dta("raw-data/GGSS2018.dta")
+
+
+```
+
+**2. The codebook provides documentation on the survey items and measurement. Looking into the variable `sex`, the interviewer is advised to assign a respondent either Male or Female sex without asking. Discuss potential issues of that survey item.**
+
+Answer:
+
+
+**3. Plot the relationship between education and income. In the plot, visualize respondents by their sex and location of residence. Formulate your expectations for the effect of education on income and consider differences in the visualized categories. **
+
+```{r 1-bivariate-plot}
+# Read Data
+GGSS <-  haven::read_dta("raw-data/GGSS2018.dta")
+
+
+```
+
+Answer:
+
+
+**4. Regress individual income, `di01a`, on years of education, `S01`. Report your results in a well-formatted table. Interpret your findings based on coefficients, uncertainty and model fit. **
+
+```{r 1-m1, results = "asis"}
+
+```
+
+Answer:
+
+
+**5. Create a residual plot for your regression model. Discuss any problems you observe. What are their implications for our model and interpretation?**
+
+```{r 1-residuals}
+
+```
+
+Answer:
+
+
+**6. Regarding the problems you reported in task 5, are there any you are able to fix? If so, apply your fix and rerun the regression. Report the results of both models, with and without fixes, in seperate columns of a single table.**
+
+*Hint: You can report multiple models with one call to stargazer.*
+
+```{r 1-m2, results = "asis"}
+
+```
+
+Answer:
+
+
+## Part 2: Parental Education and Income
+
+**1. After presenting your preliminary results, you are asked to account for the effects of parental education on income. Inspect the data on education of a respondent's mother, `miscd975`, and father, `fiscd975`. Recode the variables if necessary. In a short sentence, explain your choice of recoding.**
+
+```{r 2-data-processing}
+
+```
+
+Answer:
+
+
+**2. Respecify your previous regression model to control for the effect of parental education. Compare the new results to those of the final model in Part 1, and report them in a single, well-formatted table.**
+
+```{r 2-m3, results = "asis"}
+
+```
+
+Answer:
+
+
+**3. Discuss whether it is a good idea to control for parental education. It could serve either as a control for parental education, or other unobservable influences that are related to parental education. Account for potential issues with OLS estimation when controlling for parental education.**
+
+Answer:
+
+
+
+# References {-}
